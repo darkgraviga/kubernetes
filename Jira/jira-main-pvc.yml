@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    app.kubernetes.io/instance: falconmeteor-jira
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: jira-software
+    app.kubernetes.io/version: 8.21.1
+    helm.sh/chart: jira-software-2.1.9
+  name: jira-software-pvc
+  namespace: default
+  resourceVersion: "91200"
+  uid: 7856b874-aa9b-4429-8115-d8fda246146e
+spec:
+  storageClassName: default
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  volumeMode: Filesystem

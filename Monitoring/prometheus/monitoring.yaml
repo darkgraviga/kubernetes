@@ -1,0 +1,65 @@
+version: '3.4'
+services:
+  federation:
+    image: prom/prometheus:latest
+    container_name: federation
+    ports:
+    - 9090:9090
+    command:
+    - --config.file=/etc/prometheus/prometheus.yaml
+    volumes:
+    - /opt/prometheus/federation/:/etc/prometheus/:ro
+    depends_on:
+    - cadvisor
+    - node-exporter
+  prometheus1:
+    image: prom/prometheus:latest
+    container_name: prometheus1
+    ports:
+    - 9091:9090
+    command:
+    - --config.file=/etc/prometheus/prometheus.yaml
+    volumes:
+    - /opt/prometheus/prometheus1/:/etc/prometheus/:ro
+    depends_on:
+    - cadvisor
+    - node-exporter
+  prometheus2:
+    image: prom/prometheus:latest
+    container_name: prometheus2
+    ports:
+    - 9092:9090
+    command:
+    - --config.file=/etc/prometheus/prometheus.yaml
+    volumes:
+    - /opt/prometheus/prometheus2/:/etc/prometheus/:ro
+    depends_on:
+    - cadvisor
+    - node-exporter
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports: 
+    - 3000:3000
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    ports:
+    - 9100:9100
+  cadvisor:
+    image: gcr.io/google-containers/cadvisor:latest
+    container_name: cadvisor
+    ports:
+    - 8080:8080
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    depends_on:
+    - redis
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+    - 6379:6379
